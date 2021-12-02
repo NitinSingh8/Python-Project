@@ -203,7 +203,7 @@ class Registration:
             return False
 
         try:
-            conn = data.connect(host="sql6.freesqldatabase.com", user="sql6449777", password="qk9fMdxxe9",database="sql6449777")
+            conn = data.connect(host="localhost", user="root", password="12345",database="practice")
             with conn.cursor() as cursor:
                 cursor.execute(f"select count(*) from user_detail where user_name ='{self.user_name_entry.get()}'")
                 result1 = cursor.fetchone()[0]
@@ -232,8 +232,7 @@ class Registration:
         if not self.check_error():
             return
         try:
-            conn = data.connect(host="sql6.freesqldatabase.com", user="sql6449777", password="qk9fMdxxe9",
-                                database="sql6449777")
+            conn = data.connect(host="localhost", user="root", password="12345",database="practice")
             with conn.cursor() as cursor:
                 cursor.execute(
                     f"insert into user_detail values('{self.user_name_entry.get()}','{self.first_name_entry.get()}','{self.last_name_entry.get()}',{self.phone_number},'{self.gmail_name_entry.get()}','{self.dob}',{self.age},'{self.password_entry.get()}','{self.box_value.get()}','{self.security_ans_entry.get()}','{self.created}')")
@@ -280,7 +279,7 @@ class Login:
             messagebox.showerror("Error", "Yet now no student or teacher create by admin")
 
         try:
-            conn = data.connect(host="sql6.freesqldatabase.com", user="sql6449777", password="qk9fMdxxe9",database="sql6449777")
+            conn = data.connect(host="localhost", user="root", password="12345",database="practice")
             with conn.cursor() as cursor:
                 cursor.execute(f"select count(*) from user_detail where user_name ='{self.user_name_entry.get()}'")
                 result1 = cursor.fetchone()[0]
@@ -415,13 +414,14 @@ class Login:
         self.user_login_button.place(x=775, y=100, width=225)
 
     def login_admin(self):
-        #
-        # if not self.user_name_entry.get() == "nitin_saini_08":
-        #     messagebox.showerror("Error", "You have not enter username or username is not exit")
-        #     return
-        # if not self.password_entry.get() == "12345":
-        #     messagebox.showerror("Error", "you have not enter password or password is wrong")
-        #     return
+
+        if not self.user_name_entry.get() == "nitin_saini_08":
+            messagebox.showerror("Error", "You have not enter username or username is not exit")
+            return
+        if not self.password_entry.get() == "12345":
+            messagebox.showerror("Error", "you have not enter password or password is wrong")
+            return
+
 
         self.move_to_user_dashboard()
 
@@ -430,7 +430,7 @@ class Dashboard:
     def __init__(self, root):
         self.root = root
         self.root.config(bg="#C0C0C0")
-        print("hello nitin")
+
         self.make_frame()
         self.root.title("UMS")
         self.left_side_panel()
@@ -450,6 +450,54 @@ class Dashboard:
         self.title = tk.Label(self.ums_heading, text="University Management System", font=('Aria', 25, 'bold'),bg="green")
         self.title.pack()
 
+    def change_user_pass(self):
+        self.new_window = tk.Tk()
+        self.new_window.geometry('1000x700+200+10')
+        self.new_window.config(bg='#453541')
+
+        self.main_change_password_frame = tk.Frame(self.new_window)
+        self.main_change_password_frame.place(relx=0.2,rely=0.2,width=600,height=400)
+
+        self.heading_frame_change_password = tk.Frame(self.main_change_password_frame)
+        self.heading_frame_change_password.pack()
+
+        self.change_password_heading = tk.Label(self.heading_frame_change_password, text= "Change Password", font=("Oblique",25))
+        self.change_password_heading.pack()
+
+
+        self.password_change_frame = tk.Frame(self.main_change_password_frame)
+        self.password_change_frame.place(relx=0,rely=0)
+
+        self.user_name_label_change_password = tk.Label(self.password_change_frame, text="Enter Your username")
+        self.user_name_label_change_password.grid(row = 0 , column =0,padx=10,pady=10)
+
+        self.user_name_entry_change_password = tk.Entry(self.password_change_frame)
+        self.user_name_entry_change_password.grid(row=0, column=1,padx=10,pady=10)
+
+        self.old_password_label = tk.Label(self.password_change_frame, text = "Enter Your Old Password : ")
+        self.old_password_label.grid(row = 0 , column =2,padx=10,pady=10)
+
+        self.old_password_entry = tk.Entry(self.password_change_frame)
+        self.old_password_entry.grid(row=0, column=3,padx=10,pady=10)
+
+        self.new_password_label = tk.Label(self.password_change_frame, text="Enter Your new Password : ")
+        self.new_password_label.grid(row =1 , column = 0,padx=10,pady=10)
+
+        self.new_password_entry = tk.Entry(self.password_change_frame)
+        self.new_password_entry.grid(row=1, column=1,padx=10,pady=10)
+
+        self.confirm_new_password_label = tk.Label(self.password_change_frame, text="Confirm Your new Password : ")
+        self.confirm_new_password_label.grid(row=1, column=2, padx=10, pady=10)
+
+        self.confirm_new_password_entry = tk.Entry(self.password_change_frame)
+        self.confirm_new_password_entry.grid(row=1, column=3, padx=10, pady=10)
+
+        self.submit_password_change_button = tk.Button(self.password_change_frame,text="Change Password")
+        self.submit_password_change_button.grid(row=2,column=0,columnspan=4)
+
+        self.new_window.mainloop()
+
+
     def left_side_panel(self):
         self.left_frame = tk.Frame(self.root, bg='pink')
         self.left_frame.place(x=0, y=50, width=150, height=self.height_screen)
@@ -464,7 +512,7 @@ class Dashboard:
         self.faculty_management_system = tk.Button(self.left_frame, text="Faculty \n Management \nSystem",font=("oblique", 14), bd=4, width=155, height=6)
         self.faculty_management_system.pack()
 
-        self.change_password = tk.Button(self.left_frame, text="Change \nPassword", font=("oblique", 14), bd=4,width=155, height=6)
+        self.change_password = tk.Button(self.left_frame, text="Change \nPassword", font=("oblique", 14), bd=4,width=155, height=6 , command = self.change_user_pass)
         self.change_password.pack()
 
         self.about_me = tk.Button(self.left_frame, text="About Me", font=("oblique", 14), bd=4, width=155, height=5)
@@ -530,7 +578,7 @@ class Dashboard:
         tree.grid(row=0, column=0)
 
         # connect and retreive the data from database
-        con1 = data.connect(host="sql6.freesqldatabase.com", user="sql6449777", password="qk9fMdxxe9",database="sql6449777")
+        con1 = data.connect(host="localhost", user="root", password="12345",database="practice")
         cur1 = con1.cursor()
         cur1.execute("SELECT * FROM user_detail")
         rows = cur1.fetchall()
@@ -547,11 +595,11 @@ class Dashboard:
         self.total_user_count_label = tk.Label(self.blue_box, text=self.total_user_count, padx=30, font=("oblique", 35),bg="#0000d6", fg="white")
         self.total_user_count_label.pack(side="right")
 
-        self.total_student_count = 2
+        self.total_student_count = 3
         self.total_student_count_label = tk.Label(self.red_box, text=self.total_student_count, padx=30,font=("oblique", 35), bg="#ff1f1f", fg="white")
         self.total_student_count_label.pack(side="right")
 
-        self.total_faculty_count = 1
+        self.total_faculty_count = 0
         self.total_faculty_count_label = tk.Label(self.purple_box, text=self.total_faculty_count, padx=30,font=("oblique", 35), bg="#8800f0", fg="white")
         self.total_faculty_count_label.pack(side="right")
 
@@ -568,6 +616,15 @@ class Dashboard:
         display = tk.Label(self.clock_frame, font=('Helvetica', 28),bg="gray8", fg="yellow",width = 640,height=100)
         display.pack(anchor='e')
         show_time()
+
+
+
+    def search_user(self):
+        # con2 = data.connect(host="localhost", user="root", password="12345", database="practice")
+        # cur2 = con2.cursor()
+        #
+        # cur1.execute("select * from user_detail where ")
+        pass
 
 
     def right_panel_second(self):
@@ -590,7 +647,7 @@ class Dashboard:
         self.enter_username_entry = tk.Entry(self.search_user_detail,font=("oblique", 16), bg="white")
         self.enter_username_entry.grid(row=0, column=1, pady=(0, 2))
 
-        self.search_submit_button = tk.Button(self.search_user_detail,text="Search", font=("oblique", 16),bd=4,bg="#32cd32",justify = 'center')
+        self.search_submit_button = tk.Button(self.search_user_detail,text="Search", font=("oblique", 16),bd=4,bg="#32cd32",justify = 'center',command = self.search_user)
         self.search_submit_button.grid(row=0, column=2, pady=(0, 0),padx=(160,0))
 
 
